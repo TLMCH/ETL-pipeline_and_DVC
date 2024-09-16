@@ -51,7 +51,7 @@ def prepare_price_dataset():
             return 'Таблица уже создана!!!'
 
     @task()
-    def extract(**kwargs):
+    def extract():
         """
         #### Extract task
         """
