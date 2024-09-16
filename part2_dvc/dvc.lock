@@ -1,0 +1,83 @@
+schema: '2.0'
+stages:
+  get_data:
+    cmd: python scripts/data.py
+    deps:
+    - path: scripts/data.py
+      hash: md5
+      md5: fd6293f25cc9cde2483332e261fa3c0b
+      size: 969
+    params:
+      params.yaml:
+        index_col: flat_id
+    outs:
+    - path: data/initial_data.csv
+      hash: md5
+      md5: dcd5d57ed632528262f621ddf151e6e7
+      size: 13539023
+  transform_data:
+    cmd: python scripts/data_transform.py
+    deps:
+    - path: data/initial_data.csv
+      hash: md5
+      md5: dcd5d57ed632528262f621ddf151e6e7
+      size: 13539023
+    - path: scripts/data_transform.py
+      hash: md5
+      md5: 5e521415aa0a98989e5999bbb30c4d3a
+      size: 1310
+    params:
+      params.yaml:
+        one_hot_drop: if_binary
+        target_col: price
+    outs:
+    - path: data/test_data.csv
+      hash: md5
+      md5: 678581f3c6d970cdfe95b7cd53f60795
+      size: 5013640
+    - path: data/train_data.csv
+      hash: md5
+      md5: 681254dc4b26d2e78c9bed6b1dbb95d9
+      size: 20054600
+  fit_model:
+    cmd: python scripts/fit.py
+    deps:
+    - path: data/train_data.csv
+      hash: md5
+      md5: 681254dc4b26d2e78c9bed6b1dbb95d9
+      size: 20054600
+    - path: scripts/fit.py
+      hash: md5
+      md5: 17d3330f8a8a95ad79262e7d74ebdf88
+      size: 649
+    params:
+      params.yaml:
+        target_col: price
+    outs:
+    - path: models/fitted_model.pkl
+      hash: md5
+      md5: d67f0ceac0810ba47b8c9ae77ab218ac
+      size: 1350
+  evaluate_model:
+    cmd: python scripts/evaluate.py
+    deps:
+    - path: data/test_data.csv
+      hash: md5
+      md5: 678581f3c6d970cdfe95b7cd53f60795
+      size: 5013640
+    - path: models/fitted_model.pkl
+      hash: md5
+      md5: d67f0ceac0810ba47b8c9ae77ab218ac
+      size: 1350
+    - path: scripts/evaluate.py
+      hash: md5
+      md5: 489c1777e9b38ecb88cfa9ad33573625
+      size: 973
+    params:
+      params.yaml:
+        target_col: price
+    outs:
+    - path: cv_results/cv_res.json
+      hash: md5
+      md5: fdf3348014a32730808adbe21c76e50e
+      size: 75
