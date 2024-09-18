@@ -20,10 +20,6 @@ def create_connection():
 
 
 def get_data():
-    with open('params.yaml', 'r') as fd:
-        params = yaml.safe_load(fd)
-
-
     conn = create_connection()
     data = pd.read_sql('select * from clean_flats_prices', conn)
     conn.dispose()

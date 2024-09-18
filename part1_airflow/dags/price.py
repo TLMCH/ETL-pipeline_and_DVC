@@ -13,7 +13,7 @@ def prepare_price_dataset():
     import pandas as pd
     import numpy as np
     from airflow.providers.postgres.hooks.postgres import PostgresHook
-    from sqlalchemy import MetaData, inspect, Table, Column, UniqueConstraint, Integer, BigInteger, Float, Boolean
+    from sqlalchemy import MetaData, inspect, Table, Column, UniqueConstraint, Integer, Numeric, Float, Boolean
    
     @task()
     def create_table():
@@ -31,7 +31,7 @@ def prepare_price_dataset():
             Column('is_apartment', Boolean),
             Column('studio', Boolean),
             Column('total_area', Float),
-            Column('price', BigInteger),
+            Column('price', Numeric),
             Column('build_year', Integer),
             Column('building_type_int', Integer),
             Column('latitude', Float),

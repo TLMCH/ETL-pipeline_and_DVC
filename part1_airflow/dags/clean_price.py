@@ -13,7 +13,7 @@ def clean_price_dataset():
     import pandas as pd
     import numpy as np
     from airflow.providers.postgres.hooks.postgres import PostgresHook
-    from sqlalchemy import MetaData, inspect, Table, Column, UniqueConstraint, Integer, BigInteger, Float, Boolean
+    from sqlalchemy import MetaData, inspect, Table, Column, UniqueConstraint, Integer, Numeric, Float, Boolean
    
     @task()
     def create_table():
@@ -31,7 +31,7 @@ def clean_price_dataset():
             Column('is_apartment', Boolean),
             Column('studio', Boolean),
             Column('total_area', Float),
-            Column('price', BigInteger),
+            Column('price', Numeric),
             Column('build_year', Integer),
             Column('building_type_int', Integer),
             Column('latitude', Float),
@@ -72,12 +72,12 @@ def clean_price_dataset():
         """
         #удаление дупликатов
         feature_cols = data.columns.drop('flat_id').tolist()
-        is_duplicated_features = data.duplicated(subset=feature_cols, keep=False)
+        is_duplicated_features = data.duplicated(subset=feature_cols, keep='first')
         data = data[~is_duplicated_features].reset_index(drop=True)
 
         #удаление пропусков
-        cols_with_zeros = ['kitchen_area', 'living_area']
-        for col in cols_with_zeros:
+        num_cols = data.select_dtypes(['float', 'int']).drop(columns=['id', 'flat_id', 'building_id', 'building_type_int']) # теперь я ищу нули во всех колонках, где они могут появиться
+        for col in num_cols:
             data[col].replace({0: None}, inplace=True)
         data.dropna()
         
