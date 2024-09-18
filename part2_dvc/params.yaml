@@ -1,4 +1,3 @@
 index_col: 'flat_id'
 target_col: 'price'
 one_hot_drop: 'if_binary'
-mse: 'mean_squared_error'

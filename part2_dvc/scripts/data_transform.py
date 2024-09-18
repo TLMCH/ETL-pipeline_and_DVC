@@ -3,6 +3,8 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 import yaml
+import os
+import joblib
 
 def transform_data():
     with open('params.yaml', 'r') as fd:
@@ -34,7 +36,9 @@ def transform_data():
 
     train_data.to_csv('data/train_data.csv', index=None)
     test_data.to_csv('data/test_data.csv', index=None)
-
+    os.makedirs('models', exist_ok=True) 
+    with open('models/preprocessor.pkl', 'wb') as fd:
+        joblib.dump(preprocessor, fd) 
 
 if __name__ == '__main__':
 	transform_data()

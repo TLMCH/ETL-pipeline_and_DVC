@@ -5,8 +5,8 @@ stages:
     deps:
     - path: scripts/data.py
       hash: md5
-      md5: fd6293f25cc9cde2483332e261fa3c0b
-      size: 969
+      md5: 036720a2f648b6b31d5399eef66f82fd
+      size: 890
     params:
       params.yaml:
         index_col: flat_id
@@ -28,8 +28,8 @@ stages:
       size: 13539023
     - path: scripts/data_transform.py
       hash: md5
-      md5: 5e521415aa0a98989e5999bbb30c4d3a
-      size: 1310
+      md5: bde4f17f6be08a7c498acc13204444ec
+      size: 1468
     params:
       params.yaml:
         one_hot_drop: if_binary
@@ -51,6 +51,10 @@ stages:
         my_storage:
           etag: 681254dc4b26d2e78c9bed6b1dbb95d9
           version_id: '0006224164797687'
+    - path: models/preprocessor.pkl
+      hash: md5
+      md5: b5e4c125f072a5752fcde5099001d269
+      size: 4504
   fit_model:
     cmd: python scripts/fit.py
     deps:
@@ -87,17 +91,16 @@ stages:
       size: 1350
     - path: scripts/evaluate.py
       hash: md5
-      md5: 489c1777e9b38ecb88cfa9ad33573625
-      size: 973
+      md5: 0c6a2351ab2184f9427162df9aeffd03
+      size: 1043
     params:
       params.yaml:
+        mape: mean_absolute_percentage_error
+        mse: mean_squared_error
+        r2: r2_score
         target_col: price
     outs:
     - path: cv_results/cv_res.json
       hash: md5
-      md5: fdf3348014a32730808adbe21c76e50e
-      size: 75
-      cloud:
-        my_storage:
-          etag: fdf3348014a32730808adbe21c76e50e
-          version_id: 00062241647B082F
+      md5: 7da34fa93c415d921c5aec2691d5c1c9
+      size: 104
